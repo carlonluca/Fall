@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>soap.svg</file>
+        <file>beach1.jpg</file>
     </qresource>
 </RCC>
