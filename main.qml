@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
+import QtQuick 2.12
+import QtQuick.Window 2.12
 
 Window {
     id: rootWindow
@@ -10,12 +10,11 @@ Window {
 
     Image {
         source: "/beach1.jpg"
+        anchors.fill: parent
+        fillMode: Image.Stretch
     }
 
-    Timer {
-        interval: 0
-        running: true
-        repeat: false
+    RandomTimer {
         onTriggered: {
             var ball = ballComponent.createObject(rootWindow, {x: Math.random()*parent.width})
             ball.y = rootWindow.height + height
@@ -54,10 +53,7 @@ Window {
                 source: "/soap.svg"
             }
 
-            Timer {
-                interval: 0
-                running: true
-                repeat: false
+            RandomTimer {
                 onTriggered: {
                     parent.x = parent.x + Math.random()*rootWindow.width/5 - rootWindow.width/10
                     restart()
@@ -72,7 +68,5 @@ Window {
             Behavior on y { NumberAnimation { duration: 20000 } }
             Behavior on x { SmoothedAnimation { velocity: 10 } }
         }
-
-
     }
 }

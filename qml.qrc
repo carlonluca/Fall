@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>soap.svg</file>
         <file>beach1.jpg</file>
+        <file>RandomTimer.qml</file>
     </qresource>
 </RCC>
