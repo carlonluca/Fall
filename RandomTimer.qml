@@ -4,4 +4,9 @@ Timer {
     interval: 0
     running: true
     repeat: false
+
+    function restart(maxDelay) {
+        interval = Math.random()*maxDelay
+        start()
+    }
 }

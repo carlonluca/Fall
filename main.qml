@@ -18,12 +18,7 @@ Window {
         onTriggered: {
             var ball = ballComponent.createObject(rootWindow, {x: Math.random()*parent.width})
             ball.y = rootWindow.height + height
-            restart()
-        }
-
-        function restart() {
-            interval = Math.random()*500
-            start()
+            restart(500)
         }
     }
 
@@ -34,10 +29,9 @@ Window {
             height: rootWindow.height/10
             y: -height
 
-            onYChanged: {
+            onYChanged:
                 if (y >= rootWindow.height + height)
                     destroy()
-            }
 
             Rectangle {
                 radius: width/2
@@ -56,12 +50,7 @@ Window {
             RandomTimer {
                 onTriggered: {
                     parent.x = parent.x + Math.random()*rootWindow.width/5 - rootWindow.width/10
-                    restart()
-                }
-
-                function restart() {
-                    interval = Math.random()*3000
-                    start()
+                    restart(3000)
                 }
             }
 
