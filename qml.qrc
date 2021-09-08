@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>soap.svg</file>
+    </qresource>
+</RCC>
