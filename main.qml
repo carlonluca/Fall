@@ -28,9 +28,7 @@ Item {
     property int defaultSpacing: 20
 
     id: rootWindow
-    width: 1920
-    height: 1080
-    visible: true
+    anchors.fill: parent
 
     Image {
         source: "/beach1.jpg"
@@ -42,22 +40,17 @@ Item {
         repeat: true
         interval: creationInterval
         running: true
-        onTriggered: {
-            var ball = ballComponent.createObject(rootWindow, {x: Math.random()*parent.width})
-            ball.y = rootWindow.height + height
-        }
+        onTriggered: bubbleComponent.createObject(rootWindow, {x: Math.random()*parent.width})
     }
 
     Component {
-        id: ballComponent
+        id: bubbleComponent
+
         Item {
+            id: bubble
             width: height
             height: rootWindow.height/10
-            y: -height
-
-            onYChanged:
-                if (y >= rootWindow.height + height)
-                    destroy()
+            Component.onCompleted: bubbleAnim.start()
 
             Rectangle {
                 radius: width/2
@@ -80,7 +73,20 @@ Item {
                 }
             }
 
-            Behavior on y { NumberAnimation { duration: 20000 } }
+            SequentialAnimation {
+                id: bubbleAnim
+
+                NumberAnimation {
+                    target: bubble
+                    duration: 20000
+                    property: "y"
+                    from: -height
+                    to: rootWindow.height + height
+                }
+
+                ScriptAction { script: bubble.destroy() }
+            }
+
             Behavior on x { SmoothedAnimation { velocity: 10 } }
         }
     }
