@@ -1,3 +1,24 @@
+#
+# GPLv3 license
+#
+# Copyright (c) 2021 Luca Carlon
+#
+# This file is part of Fall
+#
+# Fall is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Fall is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Fall.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 cmake_minimum_required(VERSION 3.14)
 
 project(Fall VERSION 0.1 LANGUAGES CXX)
@@ -25,11 +46,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick DBus REQUIRED)
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
-        main.cpp
-        qml.qrc
+    ${lqtutils_src}
+    main.cpp
+    qml.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -52,7 +75,7 @@ endif()
 target_compile_definitions(Fall
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(Fall
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick /opt/rpi/sysroot/usr/local/Qt-rasp-6.2.0-beta3/lib/libQt6DBus.so.6
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus
   )
 
 set_target_properties(Fall PROPERTIES
