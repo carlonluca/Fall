@@ -21,11 +21,11 @@
 
 import QtQuick 2.12
 import QtQuick.Window 2.12
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.12
 
 Item {
     property alias creationInterval: slider.value
-    property int defaultSpacing: 20
+    property int defaultSpacing: 10
 
     id: rootWindow
     anchors.fill: parent
@@ -108,7 +108,7 @@ Item {
             Text {
                 id: fpsValue
                 anchors.centerIn: parent
-                text: qsTr("fps: ") + fpsmonitor.fps
+                text: qsTr("fps ≈ ") + fpsmonitor.fps + " @ int ≈ " + Math.round(creationInterval) + " ms"
                 font.pointSize: 16
             }
         }
@@ -119,6 +119,7 @@ Item {
             height: slider.height + 2*defaultSpacing
             radius: 5
             opacity: 0.6
+            anchors.right: parent.right
 
             Slider {
                 id: slider

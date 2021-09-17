@@ -25,6 +25,7 @@
 #include <QElapsedTimer>
 #include <QDateTime>
 #include <QQmlContext>
+#include <QScreen>
 
 #include "lqtutils/lqtutils_ui.h"
 
@@ -36,11 +37,16 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    QSize __size = QGuiApplication::primaryScreen()->size()*0.5*0.5;
+    QPoint pos(__size.width(), __size.height());
+
     QQuickView view;
     LQTFrameRateMonitor* monitor = new LQTFrameRateMonitor(&view);
     view.engine()->rootContext()->setContextProperty("fpsmonitor", monitor);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view.show();
+    view.resize(QGuiApplication::primaryScreen()->size()/2);
+    view.setPosition(pos);
 
     return app.exec();
 }
