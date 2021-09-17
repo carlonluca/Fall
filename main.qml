@@ -202,9 +202,15 @@ Item {
 
             CheckBox {
                 id: checkBox
-                text: "Scale bubbles"
+                text: qsTr("Scale bubbles")
                 font.pointSize: 17
                 anchors.centerIn: parent
+                contentItem: Text {
+                    text: checkBox.text
+                    font.pointSize: 13
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: checkBox.indicator.width + checkBox.spacing
+                }
             }
         }
     }
