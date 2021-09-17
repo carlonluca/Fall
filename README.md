@@ -1,3 +1,3 @@
 A simple example app to test Qt Quick animations.
 
-![shot](shot.png)
+![shot](shot.webp)
