@@ -47,10 +47,59 @@ Item {
         id: bubbleComponent
 
         Item {
+            property int stateIndex: 0
+
             id: bubble
             width: height
             height: rootWindow.height/10
             Component.onCompleted: bubbleAnim.start()
+            state: "regular"
+
+            transform: Scale {
+                id: scaleTransform
+                origin.x: width/2
+                origin.y: height/2
+            }
+
+            states: [
+                State {
+                    name: "thin"
+                    PropertyChanges {
+                        target: scaleTransform
+                        xScale: 0.9
+                    }
+                    PropertyChanges {
+                        target: scaleTransform
+                        yScale: 1.1
+                    }
+                },
+                State {
+                    name: "thick"
+                    PropertyChanges {
+                        target: scaleTransform
+                        xScale: 1.1
+                    }
+                    PropertyChanges {
+                        target: scaleTransform
+                        yScale: 0.9
+                    }
+                },
+                State {
+                    name: "regular"
+                    PropertyChanges {
+                        target: scaleTransform
+                        xScale: 1
+                    }
+                    PropertyChanges {
+                        target: scaleTransform
+                        yScale: 1
+                    }
+                }
+            ]
+
+            transitions: Transition {
+                NumberAnimation { properties: "xScale,yScale"; easing.type: Easing.InOutQuad; duration: 1000 }
+            }
 
             Rectangle {
                 radius: width/2
@@ -70,6 +119,19 @@ Item {
                 onTriggered: {
                     parent.x = parent.x + Math.random()*rootWindow.width/5 - rootWindow.width/10
                     restart(3000)
+                }
+            }
+
+            Timer {
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: {
+                    bubble.stateIndex = (bubble.stateIndex + 1)%2
+                    if (checkBox.checked)
+                        bubble.state = (bubble.stateIndex === 0 ? "thick" : "thin")
+                    else
+                        bubble.state = "regular"
                 }
             }
 
@@ -109,7 +171,7 @@ Item {
                 id: fpsValue
                 anchors.centerIn: parent
                 text: qsTr("fps ≈ ") + fpsmonitor.fps + " @ int ≈ " + Math.round(creationInterval) + " ms"
-                font.pointSize: 16
+                font.pointSize: 17
             }
         }
 
@@ -127,6 +189,22 @@ Item {
                 from: 50
                 to: 2000
                 value: 500
+            }
+        }
+
+        Rectangle {
+            color: "orange"
+            width: checkBox.width + 2*defaultSpacing
+            height: checkBox.height + 2*defaultSpacing
+            radius: 5
+            opacity: 0.6
+            anchors.right: parent.right
+
+            CheckBox {
+                id: checkBox
+                text: "Scale bubbles"
+                font.pointSize: 17
+                anchors.centerIn: parent
             }
         }
     }
