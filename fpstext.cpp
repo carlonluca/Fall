@@ -37,7 +37,7 @@ void FPSText::paint(QPainter *painter)
 {
     recalculateFPS();
     //qDebug() << __FUNCTION__;
-    QBrush brush(Qt::yellow);
+    QBrush brush(Qt::transparent);
 
     painter->setBrush(brush);
     painter->setPen(Qt::NoPen);

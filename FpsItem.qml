@@ -11,7 +11,7 @@ Rectangle {
 
     readonly property real dp: Screen.pixelDensity * 25.4/160
 
-    color: "black"
+    color: "transparent"
     width:  childrenRect.width + 10*dp;
     height: childrenRect.height + 10*dp;
 
@@ -35,7 +35,6 @@ Rectangle {
         anchors.left: spinnerImage.right
         anchors.leftMargin: 8 * dp
         anchors.verticalCenter: spinnerImage.verticalCenter
-        color: "#c0c0c0"
         font.pixelSize: 18 * dp
         text: "Ø " + root.fpsAvg + " | " + root.fps + " fps"
     }
