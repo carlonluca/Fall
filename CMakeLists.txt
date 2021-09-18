@@ -27,9 +27,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
-        main.cpp
-        qml.qrc
+    ${lqtutils_src}
+    main.cpp
+    fpstext.cpp
+    qml.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
