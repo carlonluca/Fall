@@ -4,5 +4,6 @@
         <file>soap.svg</file>
         <file>beach1.jpg</file>
         <file>RandomTimer.qml</file>
+        <file>shackwave.fsh</file>
     </qresource>
 </RCC>

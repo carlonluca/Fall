@@ -31,9 +31,58 @@ Item {
     anchors.fill: parent
 
     Image {
+        id: bkgImage
         source: "/beach1.jpg"
         anchors.fill: parent
         fillMode: Image.Stretch
+        visible: false
+    }
+
+    ShaderEffect {
+        id: shader
+        property variant source: bkgImage
+        property real dividerValue: 1
+        property ListModel parameters: ListModel {
+            ListElement {
+                name: "Amplitude"
+                value: 0.5
+            }
+            onDataChanged: updateParameters()
+        }
+
+        anchors.fill: parent
+        fragmentShader: "qrc:/shackwave.fsh"
+
+        function updateParameters() {
+            granularity = parameters.get(0).value * 20;
+            weight = parameters.get(0).value;
+        }
+
+        // Transform slider values, and bind result to shader uniforms
+        property real granularity: 0.5 * 200
+        property real weight: 0.5
+
+        property real centerX
+        property real centerY
+        property real time
+
+        SequentialAnimation {
+            running: true
+            loops: Animation.Infinite
+            ScriptAction {
+                script: {
+                    shader.centerX = Math.random()
+                    shader.centerY = Math.random()
+                }
+            }
+            NumberAnimation {
+                target: shader
+                property: "time"
+                from: 0
+                to: 1.2
+                duration: 5000
+            }
+        }
     }
 
     Timer {
