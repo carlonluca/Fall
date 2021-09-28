@@ -40,7 +40,9 @@ Item {
         repeat: true
         interval: creationInterval
         running: true
-        onTriggered: bubbleComponent.createObject(rootWindow, {x: Math.random()*parent.width})
+        onTriggered: {
+            var bubble = bubbleComponent.createObject(rootWindow, {x: Math.random()*parent.width})
+        }
     }
 
     Component {
@@ -103,9 +105,17 @@ Item {
 
             Rectangle {
                 radius: width/2
-                color: "orange"
                 opacity: 0.4
                 anchors.fill: parent
+
+                SequentialAnimation on color {
+                    loops: Animation.Infinite
+                    running: true
+                    ColorAnimation { to: "yellow"; duration: 1000 }
+                    ColorAnimation { to: "green"; duration: 1000 }
+                    ColorAnimation { to: "blue"; duration: 1000 }
+                    ColorAnimation { to: "red"; duration: 1000 }
+                }
             }
 
             Image {
@@ -158,6 +168,7 @@ Item {
         anchors.top: parent.top
         anchors.margins: 10
         spacing: defaultSpacing
+        z: 1
 
         Rectangle {
             color: "orange"

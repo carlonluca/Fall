@@ -27,6 +27,8 @@
 #include <QQmlContext>
 #include <QScreen>
 
+#include <QDirIterator>
+
 #include "lqtutils/lqtutils_ui.h"
 
 int main(int argc, char *argv[])
