@@ -35,11 +35,15 @@ Item {
         source: "/beach1.jpg"
         anchors.fill: parent
         fillMode: Image.Stretch
-        visible: false
+        visible: !checkBoxShader.checked
     }
 
     ShaderEffect {
-        id: shader
+        property real granularity: 0.5 * 200
+        property real weight: 0.5
+        property real centerX
+        property real centerY
+        property real time
         property variant source: bkgImage
         property real dividerValue: 1
         property ListModel parameters: ListModel {
@@ -50,21 +54,10 @@ Item {
             onDataChanged: updateParameters()
         }
 
+        id: shader
         anchors.fill: parent
         fragmentShader: "qrc:/shackwave.fsh"
-
-        function updateParameters() {
-            granularity = parameters.get(0).value * 20;
-            weight = parameters.get(0).value;
-        }
-
-        // Transform slider values, and bind result to shader uniforms
-        property real granularity: 0.5 * 200
-        property real weight: 0.5
-
-        property real centerX
-        property real centerY
-        property real time
+        visible: checkBoxShader.checked
 
         SequentialAnimation {
             running: true
@@ -82,6 +75,11 @@ Item {
                 to: 1.2
                 duration: 5000
             }
+        }
+
+        function updateParameters() {
+            granularity = parameters.get(0).value * 20;
+            weight = parameters.get(0).value;
         }
     }
 
@@ -259,6 +257,28 @@ Item {
                     font.pointSize: 13
                     verticalAlignment: Text.AlignVCenter
                     leftPadding: checkBox.indicator.width + checkBox.spacing
+                }
+            }
+        }
+
+        Rectangle {
+            color: "orange"
+            width: checkBox.width + 2*defaultSpacing
+            height: checkBox.height + 2*defaultSpacing
+            radius: 5
+            opacity: 0.6
+            anchors.right: parent.right
+
+            CheckBox {
+                id: checkBoxShader
+                text: qsTr("Shader")
+                font.pointSize: 17
+                anchors.centerIn: parent
+                contentItem: Text {
+                    text: checkBoxShader.text
+                    font.pointSize: 13
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: checkBoxShader.indicator.width + checkBoxShader.spacing
                 }
             }
         }
