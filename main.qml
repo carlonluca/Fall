@@ -110,7 +110,7 @@ Item {
 
                 SequentialAnimation on color {
                     loops: Animation.Infinite
-                    running: true
+                    running: checkBoxColor.checked
                     ColorAnimation { to: "yellow"; duration: 1000 }
                     ColorAnimation { to: "green"; duration: 1000 }
                     ColorAnimation { to: "blue"; duration: 1000 }
@@ -221,6 +221,28 @@ Item {
                     font.pointSize: 13
                     verticalAlignment: Text.AlignVCenter
                     leftPadding: checkBox.indicator.width + checkBox.spacing
+                }
+            }
+        }
+
+        Rectangle {
+            color: "orange"
+            width: checkBoxColor.width + 2*defaultSpacing
+            height: checkBoxColor.height + 2*defaultSpacing
+            radius: 5
+            opacity: 0.6
+            anchors.right: parent.right
+
+            CheckBox {
+                id: checkBoxColor
+                text: qsTr("Color animation")
+                font.pointSize: 17
+                anchors.centerIn: parent
+                contentItem: Text {
+                    text: checkBoxColor.text
+                    font.pointSize: 13
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: checkBoxColor.indicator.width + checkBoxColor.spacing
                 }
             }
         }
