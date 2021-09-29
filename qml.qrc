@@ -4,6 +4,7 @@
         <file>soap.svg</file>
         <file>beach1.jpg</file>
         <file>RandomTimer.qml</file>
-        <file>shackwave.fsh</file>
+        <file>wiggle.frag</file>
+        <file>wiggle.vert</file>
     </qresource>
 </RCC>
