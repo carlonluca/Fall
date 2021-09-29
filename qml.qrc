@@ -4,5 +4,9 @@
         <file>soap.svg</file>
         <file>beach1.jpg</file>
         <file>RandomTimer.qml</file>
+        <file>wiggle.frag</file>
+        <file>wiggle.vert</file>
+        <file>wiggle.vert.qsb</file>
+        <file>wiggle.frag.qsb</file>
     </qresource>
 </RCC>

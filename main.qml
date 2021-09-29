@@ -31,9 +31,38 @@ Item {
     anchors.fill: parent
 
     Image {
+        id: bkgImage
         source: "/beach1.jpg"
         anchors.fill: parent
         fillMode: Image.Stretch
+    }
+
+    ShaderEffect {
+        id: wiggleEffect
+
+        property real strength: 9.0
+        property real time: 50.0
+        property variant source: bkgImage
+
+        anchors.centerIn: parent
+        width: bkgImage.width
+        height: bkgImage.height
+        visible: checkBoxShader.checked
+
+        mesh: GridMesh {
+            resolution: Qt.size(20, 20)
+        }
+
+        UniformAnimator on time {
+            from: 0
+            to:  100
+            duration: 2000
+            loops: -1
+            running: true
+        }
+
+        vertexShader: qt_major < 6 ? "qrc:/wiggle.vert" : "qrc:/wiggle.vert.qsb"
+        fragmentShader: qt_major < 6 ? "qrc:/wiggle.frag" : "qrc:/wiggle.frag.qsb"
     }
 
     Timer {
@@ -217,6 +246,28 @@ Item {
                     font.pointSize: 13
                     verticalAlignment: Text.AlignVCenter
                     leftPadding: checkBoxColor.indicator.width + checkBoxColor.spacing
+                }
+            }
+        }
+
+        Rectangle {
+            color: "orange"
+            width: checkBoxShader.width + 2*defaultSpacing
+            height: checkBoxShader.height + 2*defaultSpacing
+            radius: 5
+            opacity: 0.6
+            anchors.right: parent.right
+
+            CheckBox {
+                id: checkBoxShader
+                text: qsTr("Shader")
+                font.pointSize: 17
+                anchors.centerIn: parent
+                contentItem: Text {
+                    text: checkBoxShader.text
+                    font.pointSize: 13
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: checkBoxShader.indicator.width + checkBoxShader.spacing
                 }
             }
         }
