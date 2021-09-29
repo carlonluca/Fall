@@ -61,9 +61,8 @@ Item {
             running: true
         }
 
-        vertexShader: "qrc:/wiggle.vert"
-        fragmentShader: "qrc:/wiggle.frag"
-
+        vertexShader: "qrc:/wiggle.vert.qsb"
+        fragmentShader: "qrc:/wiggle.frag.qsb"
     }
 
     Timer {
