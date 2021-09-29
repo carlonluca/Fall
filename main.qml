@@ -25,7 +25,7 @@ import QtQuick.Controls 2.12
 
 Item {
     property alias creationInterval: slider.value
-    property int defaultSpacing: 10
+    property int defaultSpacing: 5
 
     id: rootWindow
     anchors.fill: parent
@@ -163,59 +163,42 @@ Item {
         }
     }
 
-    Column {
+    Rectangle {
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.margins: 10
-        spacing: defaultSpacing
+        anchors.margins: defaultSpacing
+        radius: 5
+        width: column.width + 2*defaultSpacing
+        height: column.height + 2*defaultSpacing
+        color: "orange"
+        opacity: 0.8
         z: 1
 
-        Rectangle {
-            color: "orange"
-            width: fpsValue.width + 2*defaultSpacing
-            height: fpsValue.height + 2*defaultSpacing
-            radius: 5
-            opacity: 0.6
-            anchors.right: parent.right
+        Column {
+            id: column
+            anchors.centerIn: parent
+            spacing: defaultSpacing
 
             Text {
                 id: fpsValue
-                anchors.centerIn: parent
+                anchors.right: parent.right
                 text: qsTr("fps ≈ ") + fpsmonitor.fps + " @ int ≈ " + Math.round(creationInterval) + " ms"
                 font.pointSize: 17
             }
-        }
-
-        Rectangle {
-            color: "orange"
-            width: slider.width + 2*defaultSpacing
-            height: slider.height + 2*defaultSpacing
-            radius: 5
-            opacity: 0.6
-            anchors.right: parent.right
 
             Slider {
                 id: slider
-                anchors.centerIn: parent
+                anchors.right: parent.right
                 from: 50
                 to: 2000
                 value: 500
             }
-        }
-
-        Rectangle {
-            color: "orange"
-            width: checkBox.width + 2*defaultSpacing
-            height: checkBox.height + 2*defaultSpacing
-            radius: 5
-            opacity: 0.6
-            anchors.right: parent.right
 
             CheckBox {
                 id: checkBox
                 text: qsTr("Scale bubbles")
                 font.pointSize: 17
-                anchors.centerIn: parent
+                anchors.left: parent.left
                 contentItem: Text {
                     text: checkBox.text
                     font.pointSize: 13
@@ -223,21 +206,12 @@ Item {
                     leftPadding: checkBox.indicator.width + checkBox.spacing
                 }
             }
-        }
-
-        Rectangle {
-            color: "orange"
-            width: checkBoxColor.width + 2*defaultSpacing
-            height: checkBoxColor.height + 2*defaultSpacing
-            radius: 5
-            opacity: 0.6
-            anchors.right: parent.right
 
             CheckBox {
                 id: checkBoxColor
                 text: qsTr("Color animation")
                 font.pointSize: 17
-                anchors.centerIn: parent
+                anchors.left: parent.left
                 contentItem: Text {
                     text: checkBoxColor.text
                     font.pointSize: 13
