@@ -248,21 +248,12 @@ Item {
                     leftPadding: checkBoxColor.indicator.width + checkBoxColor.spacing
                 }
             }
-        }
-
-        Rectangle {
-            color: "orange"
-            width: checkBoxShader.width + 2*defaultSpacing
-            height: checkBoxShader.height + 2*defaultSpacing
-            radius: 5
-            opacity: 0.6
-            anchors.right: parent.right
 
             CheckBox {
                 id: checkBoxShader
                 text: qsTr("Shader")
                 font.pointSize: 17
-                anchors.centerIn: parent
+                anchors.left: parent.left
                 contentItem: Text {
                     text: checkBoxShader.text
                     font.pointSize: 13
