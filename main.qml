@@ -35,52 +35,61 @@ Item {
         source: "/beach1.jpg"
         anchors.fill: parent
         fillMode: Image.Stretch
-        visible: !checkBoxShader.checked
     }
 
     ShaderEffect {
-        property real granularity: 0.5 * 200
-        property real weight: 0.5
-        property real centerX
-        property real centerY
-        property real time
-        property variant source: bkgImage
-        property real dividerValue: 1
-        property ListModel parameters: ListModel {
-            ListElement {
-                name: "Amplitude"
-                value: 0.5
-            }
-            onDataChanged: updateParameters()
-        }
+        id: wiggleEffect
 
-        id: shader
-        anchors.fill: parent
-        fragmentShader: "qrc:/shackwave.fsh"
+        property real strength: 8.0
+        property real time: 50.0
+        property variant source: bkgImage
+
+        anchors.centerIn: parent
+        width: bkgImage.width
+        height: bkgImage.height
         visible: checkBoxShader.checked
 
-        SequentialAnimation {
-            running: true
-            loops: Animation.Infinite
-            ScriptAction {
-                script: {
-                    shader.centerX = Math.random()
-                    shader.centerY = Math.random()
-                }
-            }
-            NumberAnimation {
-                target: shader
-                property: "time"
-                from: 0
-                to: 1.2
-                duration: 5000
-            }
+        mesh: GridMesh {
+            resolution: Qt.size(20, 20)
         }
 
-        function updateParameters() {
-            granularity = parameters.get(0).value * 20;
-            weight = parameters.get(0).value;
+        UniformAnimator on time {
+            from: 0
+            to:  100
+            duration: 2000
+            loops: -1
+            running: true
         }
+
+        vertexShader: "
+                float noise(vec2 uv){
+                    return fract(sin(dot(uv, vec2(12.9898,78.233))) * 43758.5453123);
+                }
+
+                uniform highp mat4 qt_Matrix;
+                uniform lowp float strength;
+                uniform lowp float time;
+                attribute highp vec4 qt_Vertex;
+                attribute highp vec2 qt_MultiTexCoord0;
+                varying highp vec2 qt_TexCoord0;
+                void main() {
+                    qt_TexCoord0 = qt_MultiTexCoord0;
+                    highp vec4 pos = qt_Vertex;
+                    lowp float angle = 2. * 3.141 * (noise(pos.xy) + time / 100.0);
+                    lowp float strengthWithVariation = strength * noise(pos.yx);
+                    pos.x += cos(angle) * strengthWithVariation;
+                    pos.y += sin(angle) * strengthWithVariation;
+                    gl_Position = qt_Matrix * pos;
+                }"
+
+        fragmentShader: "
+                varying highp vec2 qt_TexCoord0;
+                uniform lowp float qt_Opacity;
+                uniform lowp sampler2D source;
+                void main() {
+                    gl_FragColor = texture2D(source, qt_TexCoord0) * qt_Opacity;
+                }"
+
     }
 
     Timer {
@@ -263,8 +272,8 @@ Item {
 
         Rectangle {
             color: "orange"
-            width: checkBox.width + 2*defaultSpacing
-            height: checkBox.height + 2*defaultSpacing
+            width: checkBoxShader.width + 2*defaultSpacing
+            height: checkBoxShader.height + 2*defaultSpacing
             radius: 5
             opacity: 0.6
             anchors.right: parent.right
