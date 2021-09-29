@@ -40,7 +40,7 @@ Item {
     ShaderEffect {
         id: wiggleEffect
 
-        property real strength: 8.0
+        property real strength: 9.0
         property real time: 50.0
         property variant source: bkgImage
 
@@ -61,8 +61,8 @@ Item {
             running: true
         }
 
-        vertexShader: "qrc:/wiggle.vert.qsb"
-        fragmentShader: "qrc:/wiggle.frag.qsb"
+        vertexShader: qt_major < 6 ? "qrc:/wiggle.vert" : "qrc:/wiggle.vert.qsb"
+        fragmentShader: qt_major < 6 ? "qrc:/wiggle.frag" : "qrc:/wiggle.frag.qsb"
     }
 
     Timer {

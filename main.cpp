@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
     QQuickView view;
     LQTFrameRateMonitor* monitor = new LQTFrameRateMonitor(&view);
     view.engine()->rootContext()->setContextProperty("fpsmonitor", monitor);
+    view.engine()->rootContext()->setContextProperty("qt_major", QT_VERSION_MAJOR);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);
