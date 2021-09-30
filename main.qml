@@ -212,8 +212,9 @@ Item {
                 id: fpsValue
                 anchors.right: parent.right
                 text: qsTr("fps ≈ ") + fpsmonitor.fps + " @ int ≈ " + Math.round(creationInterval) + " ms"
-                font: monospaceFont
-                width: 200
+                font.family: monospaceFont
+                font.pointSize: 13
+                width: 220
             }
 
             Slider {
