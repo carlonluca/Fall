@@ -26,6 +26,7 @@
 #include <QDateTime>
 #include <QQmlContext>
 #include <QScreen>
+#include <QFontDatabase>
 
 #include <QDirIterator>
 
@@ -39,11 +40,13 @@ int main(int argc, char *argv[])
 
     QSize __size = QGuiApplication::primaryScreen()->size()*0.5*0.5;
     QPoint pos(__size.width(), __size.height());
+    QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
     QQuickView view;
     LQTFrameRateMonitor* monitor = new LQTFrameRateMonitor(&view);
     view.engine()->rootContext()->setContextProperty("fpsmonitor", monitor);
     view.engine()->rootContext()->setContextProperty("qt_major", QT_VERSION_MAJOR);
+    view.engine()->rootContext()->setContextProperty("monospaceFont", fixedFont);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);
