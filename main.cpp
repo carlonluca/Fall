@@ -33,6 +33,8 @@
 
 int main(int argc, char *argv[])
 {
+    qputenv("QSG_INFO", "1");
+
     QGuiApplication app(argc, argv);
 
     QSize __size = QGuiApplication::primaryScreen()->size()*0.5*0.5;
