@@ -69,9 +69,7 @@ Item {
         repeat: true
         interval: creationInterval
         running: true
-        onTriggered: {
-            var bubble = bubbleComponent.createObject(rootWindow, {x: Math.random()*parent.width})
-        }
+        onTriggered: bubbleComponent.createObject(rootWindow, {x: Math.random()*parent.width})
     }
 
     Component {
@@ -136,6 +134,7 @@ Item {
                 radius: width/2
                 opacity: 0.4
                 anchors.fill: parent
+                color: "orange"
 
                 SequentialAnimation on color {
                     loops: Animation.Infinite
@@ -144,6 +143,7 @@ Item {
                     ColorAnimation { to: "green"; duration: 1000 }
                     ColorAnimation { to: "blue"; duration: 1000 }
                     ColorAnimation { to: "red"; duration: 1000 }
+                    ColorAnimation { to: "orange"; duration: 1000 }
                 }
             }
 
@@ -212,7 +212,8 @@ Item {
                 id: fpsValue
                 anchors.right: parent.right
                 text: qsTr("fps ≈ ") + fpsmonitor.fps + " @ int ≈ " + Math.round(creationInterval) + " ms"
-                font.pointSize: 17
+                font: monospaceFont
+                width: 200
             }
 
             Slider {
