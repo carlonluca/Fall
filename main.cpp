@@ -27,16 +27,40 @@
 #include <QQmlContext>
 #include <QScreen>
 #include <QFontDatabase>
-
+#include <QCommandLineParser>
 #include <QDirIterator>
 
 #include "lqtutils/lqtutils_ui.h"
+#include "lqtutils/lqtutils_string.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char** argv)
 {
     qputenv("QSG_INFO", "1");
 
     QGuiApplication app(argc, argv);
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Fall");
+    parser.addHelpOption();
+
+    QCommandLineOption chooseBkgOption(
+                QSL("b"),
+                QSL("Background type: image,qtvideo"),
+                QSL("type"),
+                QSL("image"));
+    parser.addOption(chooseBkgOption);
+    QCommandLineOption mediaPathOption(
+                QSL("p"),
+                QSL("Media path"),
+                QSL("path"),
+                QString());
+    parser.addOption(mediaPathOption);
+    parser.process(app);
+
+    qDebug() << "Bkg:" << parser.value(chooseBkgOption);
+    qDebug() << "Path:" << parser.value(mediaPathOption);
+
+    if (parser.value(chooseBkgOption) == QSL("qtvideo") && parser.value(mediaPathOption).isEmpty())
+        qFatal("Set video path please");
 
     QSize __size = QGuiApplication::primaryScreen()->size()*0.5*0.5;
     QPoint pos(__size.width(), __size.height());
@@ -47,6 +71,8 @@ int main(int argc, char *argv[])
     view.engine()->rootContext()->setContextProperty("fpsmonitor", monitor);
     view.engine()->rootContext()->setContextProperty("qt_major", QT_VERSION_MAJOR);
     view.engine()->rootContext()->setContextProperty("monospaceFont", fixedFont);
+    view.engine()->rootContext()->setContextProperty("btype", parser.value(chooseBkgOption));
+    view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);

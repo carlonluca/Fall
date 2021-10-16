@@ -33,7 +33,13 @@ Item {
 
     Loader {
         id: bkgLoader
-        source: "BkgImage.qml"
+        source: {
+            if (btype === "image")
+                return "BkgImage.qml"
+            else if (btype === "qtvideo")
+                return "BkgVideoQt.qml"
+        }
+
         anchors.fill: parent
         active: true
     }

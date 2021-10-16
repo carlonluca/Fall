@@ -22,7 +22,6 @@
 import QtQuick 2.0
 
 Image {
-    id: bkgImage
     source: "/beach1.jpg"
     anchors.fill: parent
     fillMode: Image.Stretch

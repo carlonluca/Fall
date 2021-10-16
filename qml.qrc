@@ -9,5 +9,6 @@
         <file>wiggle.vert.qsb</file>
         <file>wiggle.frag.qsb</file>
         <file>BkgImage.qml</file>
+        <file>BkgVideoQt.qml</file>
     </qresource>
 </RCC>
