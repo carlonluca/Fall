@@ -8,5 +8,6 @@
         <file>wiggle.vert</file>
         <file>wiggle.vert.qsb</file>
         <file>wiggle.frag.qsb</file>
+        <file>BkgImage.qml</file>
     </qresource>
 </RCC>

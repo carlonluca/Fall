@@ -25,16 +25,17 @@ import QtQuick.Controls 2.12
 
 Item {
     property alias creationInterval: slider.value
+    property alias bkgImage: bkgLoader.item
     property int defaultSpacing: 5
 
     id: rootWindow
     anchors.fill: parent
 
-    Image {
-        id: bkgImage
-        source: "/beach1.jpg"
+    Loader {
+        id: bkgLoader
+        source: "BkgImage.qml"
         anchors.fill: parent
-        fillMode: Image.Stretch
+        active: true
     }
 
     ShaderEffect {
@@ -45,8 +46,8 @@ Item {
         property variant source: bkgImage
 
         anchors.centerIn: parent
-        width: bkgImage.width
-        height: bkgImage.height
+        width: bkgImage ? bkgImage.width : 0
+        height: bkgImage ? bkgImage.height : 0
         visible: checkBoxShader.checked
 
         mesh: GridMesh {
