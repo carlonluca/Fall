@@ -36,8 +36,12 @@ Item {
         source: {
             if (btype === "image")
                 return "BkgImage.qml"
-            else if (btype === "qtvideo")
-                return "BkgVideoQt.qml"
+            else if (btype === "qtvideo" && qt_major > 5)
+                return "BkgVideoQt6.qml"
+            else if (btype === "qtvideo" && qt_major <= 5)
+                return "BkgVideoQt5.qml"
+            else
+                return "BkgImage.qml"
         }
 
         anchors.fill: parent
