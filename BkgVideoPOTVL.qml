@@ -19,16 +19,22 @@
  * along with Fall.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-import QtQuick
-import QtMultimedia
+import QtQuick 2.0
+import QtMultimedia 5.0
+import PiOmxTexturesVideoLayer 0.1
 
-Image {
+Rectangle {
     anchors.fill: parent
+    color: "orange"
 
     Video {
-        source: "file://" + mpath
+        id: player
         anchors.fill: parent
-        fillMode: VideoOutput.Stretch
-        Component.onCompleted: play()
+        source: "file://" + mpath
+        autoPlay: true
+        onVlStateChanged:
+            if (vlState === MediaPlayer.EndOfMedia)
+                player.play()
+        fillMode: Qt.KeepAspectRatio
     }
 }

@@ -40,6 +40,8 @@ Item {
                 return "BkgVideoQt6.qml"
             else if (btype === "qtvideo" && qt_major <= 5)
                 return "BkgVideoQt5.qml"
+            else if (btype === "potvl")
+                return "BkgVideoPOTVL.qml"
             else
                 return "BkgImage.qml"
         }

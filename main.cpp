@@ -74,6 +74,10 @@ int main(int argc, char** argv)
     view.engine()->rootContext()->setContextProperty("btype", parser.value(chooseBkgOption));
     view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
+#if QT_VERSION_MAJOR <= 5
+    view.setClearBeforeRendering(true);
+#endif
+    view.setColor(Qt::transparent);
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);
     view.setPosition(pos);
