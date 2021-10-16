@@ -56,9 +56,6 @@ int main(int argc, char** argv)
     parser.addOption(mediaPathOption);
     parser.process(app);
 
-    qDebug() << "Bkg:" << parser.value(chooseBkgOption);
-    qDebug() << "Path:" << parser.value(mediaPathOption);
-
     if (parser.value(chooseBkgOption) == QSL("qtvideo") && parser.value(mediaPathOption).isEmpty())
         qFatal("Set video path please");
 
