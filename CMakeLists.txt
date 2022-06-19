@@ -91,7 +91,8 @@ endif()
 
 #target_link_libraries(Fall -l/opt/rpi/sysroot/usr/local/Qt-rasp-6.2.0-beta3/lib/libQt6DBus.so.6)
 link_directories(${CMAKE_SYSROOT}/usr/lib/arm-linux-gnueabihf)
-target_link_libraries(Fall PRIVATE drm)
+link_directories(${CMAKE_SYSROOT}/usr/lib/arm-linux-gnueabihf/neon/vfp)
+target_link_libraries(Fall PRIVATE drm avcodec avformat avutil)
 
 include_directories(BEFORE "${CMAKE_SYSROOT}/usr/include/libdrm")
 
