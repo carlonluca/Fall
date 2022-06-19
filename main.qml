@@ -42,6 +42,8 @@ Item {
                 return "BkgVideoQt5.qml"
             else if (btype === "potvl")
                 return "BkgVideoPOTVL.qml"
+            else if (btype === "potvlkms")
+                return "BkgVideoPOTVLKms.qml"
             else
                 return "BkgImage.qml"
         }

@@ -33,6 +33,8 @@
 #include "lqtutils/lqtutils_ui.h"
 #include "lqtutils/lqtutils_string.h"
 
+#include "kms.h"
+
 int main(int argc, char** argv)
 {
     qputenv("QSG_INFO", "1");

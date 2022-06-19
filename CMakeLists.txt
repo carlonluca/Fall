@@ -90,3 +90,9 @@ if(QT_VERSION_MAJOR EQUAL 6)
 endif()
 
 #target_link_libraries(Fall -l/opt/rpi/sysroot/usr/local/Qt-rasp-6.2.0-beta3/lib/libQt6DBus.so.6)
+
+qt_add_qml_module(Fall
+    URI com.luke
+    VERSION 1.0
+    SOURCES kms.h kms.cpp
+)
