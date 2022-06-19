@@ -90,6 +90,10 @@ if(QT_VERSION_MAJOR EQUAL 6)
 endif()
 
 #target_link_libraries(Fall -l/opt/rpi/sysroot/usr/local/Qt-rasp-6.2.0-beta3/lib/libQt6DBus.so.6)
+link_directories(${CMAKE_SYSROOT}/usr/lib/arm-linux-gnueabihf)
+target_link_libraries(Fall PRIVATE drm)
+
+include_directories(BEFORE "${CMAKE_SYSROOT}/usr/include/libdrm")
 
 qt_add_qml_module(Fall
     URI com.luke
