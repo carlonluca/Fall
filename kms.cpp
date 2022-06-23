@@ -1,58 +1,9 @@
-#include <QDebug>
-#include <QThread>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <xf86drm.h>
-#include <xf86drmMode.h>
-#include <libdrm/drm_fourcc.h>
-#include <sys/time.h>
-#include <getopt.h>
-
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavutil/hwcontext_drm.h>
-}
-
 #include "kms.h"
 
 #define ALIGN(x, a)		((x) + (a - 1)) & (~(a - 1))
 #define DRM_ALIGN(val, align)	((val + (align - 1)) & ~(align - 1))
 
 #define INBUF_SIZE 4096
-
-struct drm_buffer {
-	unsigned int fourcc;
-	unsigned int bo_handle;
-	unsigned int fb_handle;
-	int dbuf_fd;
-	void *mmap_buf;
-	uint32_t pitches[4];
-	uint32_t offsets[4];
-	uint32_t bo_handles[4];
-};
-
-struct drm_dev {
-	int fd;
-	uint32_t conn_id, enc_id, crtc_id, fb_id, plane_id, crtc_idx;
-	uint32_t width, height;
-	uint32_t pitch, size, handle;
-	drmModeModeInfo mode;
-	drmModeCrtc *saved_crtc;
-	struct drm_dev *next;
-};
-
-static struct drm_dev *pdev;
-static unsigned int drm_format;
 
 #define DBG_TAG "  ffmpeg-drm"
 
@@ -69,7 +20,10 @@ static unsigned int drm_format;
 #define info(msg, ...) print(msg "\n", ##__VA_ARGS__)
 #define dbg(msg, ...)  print(DBG_TAG ": " msg "\n", ##__VA_ARGS__)
 
-int drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
+static int lastZ = 0;
+static int g_fd = -1;
+
+int Kms::drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 			 uint32_t height, int fullscreen)
 {
 	uint32_t crtc_w, crtc_h;
@@ -88,13 +42,13 @@ int drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 		      0, 0, width << 16, height << 16);
 }
 
-static int drm_dmabuf_import(struct drm_buffer *buf, unsigned int width,
+int Kms::drm_dmabuf_import(struct drm_buffer *buf, unsigned int width,
 		      unsigned int height)
 {
 	return drmPrimeFDToHandle(pdev->fd, buf->dbuf_fd, &buf->bo_handle);
 }
 
-static int drm_dmabuf_addfb(struct drm_buffer *buf, uint32_t width, uint32_t height)
+int Kms::drm_dmabuf_addfb(struct drm_buffer *buf, uint32_t width, uint32_t height)
 {
 	int ret;
 
@@ -152,7 +106,7 @@ static int find_plane(int fd, unsigned int fourcc, uint32_t *plane_id,
 
 		for (j = 0; j < plane->count_formats; ++j) {
             info("drm: format %u -> %u", plane->formats[j], format);
-			if (plane->formats[j] == format)
+			if (plane->formats[j] == format && plane->plane_id > lastZ)
 		    	break;
 		}
 
@@ -162,6 +116,8 @@ static int find_plane(int fd, unsigned int fourcc, uint32_t *plane_id,
 		}
 
 		*plane_id = plane->plane_id;
+		qDebug() << "Found:" << plane->plane_id;
+		lastZ = plane->plane_id;
 		drmModeFreePlane(plane);
         break;
 	}
@@ -270,11 +226,18 @@ static int drm_open(const char *path)
 	uint64_t has_dumb;
 	int ret;
 
+	if (g_fd > 0) {
+		qDebug() << "Re-using fd" << g_fd;
+		return g_fd;
+	}
+
 	fd = open(path, O_RDWR);
 	if (fd < 0) {
 		err("cannot open \"%s\"\n", path);
 		return -1;
 	}
+
+	g_fd = fd;
 
 	/* set FD_CLOEXEC flag */
 	if ((flags = fcntl(fd, F_GETFD)) < 0 ||
@@ -297,7 +260,7 @@ err:
 	return -1;
 }
 
-static int drm_init(unsigned int fourcc, const char *device)
+int Kms::drm_init(unsigned int fourcc, const char *device)
 {
 	struct drm_dev *dev_head, *dev;
 	int fd;
@@ -345,8 +308,9 @@ err:
 	return -1;
 }
 
-static int display(struct drm_buffer *drm_buf, int width, int height)
+int Kms::display(struct drm_buffer *drm_buf, int width, int height)
 {
+	qDebug() << Q_FUNC_INFO << this;
         struct drm_gem_close gem_close;
         int ret;
 
@@ -366,7 +330,10 @@ static int display(struct drm_buffer *drm_buf, int width, int height)
 		return -EFAULT;
 	}
 
-	drm_dmabuf_set_plane(drm_buf, width, height, 1);
+	int err = -1*drm_dmabuf_set_plane(drm_buf, width, height, 1);
+	qDebug() << "set plane:" << strerror(err);
+
+	QThread::sleep(10);
 
         /* WARNING: this will _obviously_ cause the screen to flicker!!
          *
@@ -396,7 +363,7 @@ static int display(struct drm_buffer *drm_buf, int width, int height)
 	return 0;
 }
 
-static void decode_and_display(AVCodecContext *dec_ctx, AVFrame *frame,
+void Kms::decode_and_display(AVCodecContext *dec_ctx, AVFrame *frame,
 			AVPacket *pkt, const char *device)
 {
     qDebug() << Q_FUNC_INFO;
@@ -506,7 +473,9 @@ static void usage(void)
 class DecodeThread : public QThread
 {
 public:
-    DecodeThread() : QThread() {}
+	Kms* m_kms;
+	QString m_filename;
+    DecodeThread(const QString& filename, Kms* kms) : QThread(), m_filename(filename), m_kms(kms) {}
     void run() override {
         uint8_t inbuf[INBUF_SIZE + AV_INPUT_BUFFER_PADDING_SIZE];
         AVCodecParserContext *parser;
@@ -520,7 +489,8 @@ public:
         int ret;
         int lindex, opt;
         unsigned int frame_width = 1280, frame_height = 720;
-        char *codec_name = "h264_v4l2m2m", *video_name = "h264.FVDO_Freeway_720p.264";
+		QByteArray filenameData = m_filename.toLocal8Bit();
+        char *codec_name = "h264_v4l2m2m", *video_name = filenameData.data();
         char *device_name = "/dev/dri/card0";
 
         if (!frame_width || !frame_height || !codec_name || !video_name) {
@@ -603,12 +573,12 @@ public:
                 data_size -= ret;
 
                 if (pkt->size)
-                    decode_and_display(c, frame, pkt, device_name);
+                    m_kms->decode_and_display(c, frame, pkt, device_name);
             }
         }
         fclose(f);
         
-        decode_and_display(c, frame, NULL, device_name);
+        m_kms->decode_and_display(c, frame, NULL, device_name);
         av_parser_close(parser);
         avcodec_free_context(&c);
         av_frame_free(&frame);
@@ -649,7 +619,7 @@ void Kms::play()
         qFatal("Cannot find plane");
 #endif
 
-    DecodeThread* t = new DecodeThread();
+    DecodeThread* t = new DecodeThread(m_filename, this);
     t->start();
 }
 
