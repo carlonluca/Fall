@@ -51,7 +51,7 @@ struct drm_dev {
 class Kms
 {
 public:
-    Kms(const QString filename, QQuickItem* parent = nullptr) : m_filename(filename) {}
+    Kms(const QString filename, int id, QQuickItem* parent = nullptr) : m_filename(filename), m_id(id) {}
 
     int drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 			 uint32_t height, int fullscreen);
@@ -63,14 +63,17 @@ public:
     void decode_and_display(AVCodecContext *dec_ctx, AVFrame *frame,
 			AVPacket *pkt, const char *device);
 
+	int id() const { return m_id; }
+
 public:
     void play();
     void stop();
 
 private:
     QString m_filename;
-    drm_dev *pdev = nullptr;
+    static drm_dev *pdev;
     unsigned int drm_format = 0;
+	int m_id;
 };
 
 #endif // KMS_H

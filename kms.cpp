@@ -23,6 +23,8 @@
 static int lastZ = 0;
 static int g_fd = -1;
 
+drm_dev* Kms::pdev = nullptr;
+
 int Kms::drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 			 uint32_t height, int fullscreen)
 {
@@ -36,9 +38,13 @@ int Kms::drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 		crtc_h = pdev->height;
 	}
 
-	return drmModeSetPlane(pdev->fd, pdev->plane_id, pdev->crtc_id,
+	float fac = 0.8;
+	if (m_id == 100)
+		fac = 0.5;
+
+	return drmModeSetPlane(pdev->fd, m_id, pdev->crtc_id,
 		      buf->fb_handle, 0,
-		      0, 0, crtc_w, crtc_h,
+		      0, 0, crtc_w*fac, crtc_h*fac,
 		      0, 0, width << 16, height << 16);
 }
 
@@ -61,6 +67,8 @@ int Kms::drm_dmabuf_addfb(struct drm_buffer *buf, uint32_t width, uint32_t heigh
 
 	uint32_t stride = DRM_ALIGN(width, 128);
 	uint32_t y_scanlines = DRM_ALIGN(height, 32);
+
+	qDebug() << pdev->fd << width << height << buf->fourcc << buf->bo_handles << buf->pitches << buf->offsets << buf->fb_handle;
 
 	ret = drmModeAddFB2(pdev->fd, width, height, buf->fourcc, buf->bo_handles,
 			    buf->pitches, buf->offsets, &buf->fb_handle, 0);
@@ -394,20 +402,25 @@ void Kms::decode_and_display(AVCodecContext *dec_ctx, AVFrame *frame,
 			drm_buf.offsets[i] = desc->layers->planes[i].offset;
 		}
 
-                if (!pdev) {
-                    /* initialize DRM with the format returned in the frame */
-                    ret = drm_init(desc->layers[0].format, device);
-                    if (ret) {
-                        err("Error initializing drm\n");
-                        exit(1);
-                    }
+		if (!pdev) {
+			/* initialize DRM with the format returned in the frame */
+			qDebug() << "drm_init for id" << m_id;
+			ret = drm_init(desc->layers[0].format, device);
+			if (ret) {
+				err("Error initializing drm\n");
+				exit(1);
+			}
 
-                    /* remember the format */
-                    drm_format = desc->layers[0].format;
-                }
+			
+		}
 
-                /* pass the format in the buffer */
-                drm_buf.fourcc = drm_format;
+		/* remember the format */
+			drm_format = desc->layers[0].format;
+
+		pdev->plane_id = m_id;
+
+		/* pass the format in the buffer */
+		drm_buf.fourcc = drm_format;
 		ret = display(&drm_buf, frame->width, frame->height);
 		if (ret < 0) {
             qFatal("Failure display");

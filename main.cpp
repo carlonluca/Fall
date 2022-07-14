@@ -87,13 +87,14 @@ int main(int argc, char** argv)
 #endif
 
     qDebug() << "Start 1";
-    Kms kms("coffee_run_hp_2048x858.h264");
+    //Kms kms("coffee_run_hp_2048x858.h264");
+    Kms kms("h264.FVDO_Freeway_720p.264", 90);
     kms.play();
 
     QThread::sleep(5);
 
     qDebug() << "Start 2";
-    Kms kms2("h264.FVDO_Freeway_720p.264");
+    Kms kms2("h264.FVDO_Freeway_720p.264", 100);
     kms2.play();
 
     while (true) {}
