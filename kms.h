@@ -71,7 +71,7 @@ public:
 
 private:
     QString m_filename;
-    static drm_dev *pdev;
+    drm_dev *pdev = nullptr;
     unsigned int drm_format = 0;
 	int m_id;
 };

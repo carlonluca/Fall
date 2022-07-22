@@ -39,6 +39,21 @@
 int main(int argc, char** argv)
 {
 #if 0
+    qDebug() << "Start 1";
+    //Kms kms("coffee_run_hp_2048x858.h264");
+    Kms kms("h264.FVDO_Freeway_720p.264", 90);
+    kms.play();
+
+    QThread::sleep(5);
+
+    qDebug() << "Start 2";
+    Kms kms2("h264.FVDO_Freeway_720p.264", 100);
+    kms2.play();
+
+    QThread::sleep(20000);
+#endif
+
+#if 1
     qputenv("QSG_INFO", "1");
 
     QGuiApplication app(argc, argv);
@@ -83,21 +98,13 @@ int main(int argc, char** argv)
     view.resize(QGuiApplication::primaryScreen()->size()/2);
     view.setPosition(pos);
 
-    return app.exec();
-#endif
-
     qDebug() << "Start 1";
     //Kms kms("coffee_run_hp_2048x858.h264");
-    Kms kms("h264.FVDO_Freeway_720p.264", 90);
+    Kms kms("h264.FVDO_Freeway_720p.264", 190);
     kms.play();
 
-    QThread::sleep(5);
-
-    qDebug() << "Start 2";
-    Kms kms2("h264.FVDO_Freeway_720p.264", 100);
-    kms2.play();
-
-    while (true) {}
+    return app.exec();
+#endif
 
     return 0;
 }

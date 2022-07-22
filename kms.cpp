@@ -1,3 +1,6 @@
+#include <QFileInfo>
+#include <QDir>
+
 #include "kms.h"
 
 #define ALIGN(x, a)		((x) + (a - 1)) & (~(a - 1))
@@ -21,9 +24,9 @@
 #define dbg(msg, ...)  print(DBG_TAG ": " msg "\n", ##__VA_ARGS__)
 
 static int lastZ = 0;
-static int g_fd = -1;
+//static int g_fd = -1;
 
-drm_dev* Kms::pdev = nullptr;
+//drm_dev* Kms::pdev = nullptr;
 
 int Kms::drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 			 uint32_t height, int fullscreen)
@@ -41,8 +44,22 @@ int Kms::drm_dmabuf_set_plane(struct drm_buffer *buf, uint32_t width,
 	float fac = 0.8;
 	if (m_id == 100)
 		fac = 0.5;
+	
+	int pid = qApp->applicationPid();
+	QFileInfoList fds = QDir(QString("/proc/%1/fd").arg(pid)).entryInfoList(QStringList());
+	const QFileInfo* fd = nullptr;
+	qDebug() << fds;
+	for (const QFileInfo& fileInfo : fds) {
+		if (fileInfo.symLinkTarget() == "/dev/dri/card0") {
+			fd = &fileInfo;
+			break;
+		}
+	}
 
-	return drmModeSetPlane(pdev->fd, m_id, pdev->crtc_id,
+	int drifd = fd->fileName().toInt();
+	qDebug() << "Found open FD:" << *fd << drifd;
+
+	return drmModeSetPlane(drifd, m_id, pdev->crtc_id,
 		      buf->fb_handle, 0,
 		      0, 0, crtc_w*fac, crtc_h*fac,
 		      0, 0, width << 16, height << 16);
@@ -234,10 +251,12 @@ static int drm_open(const char *path)
 	uint64_t has_dumb;
 	int ret;
 
-	if (g_fd > 0) {
-		qDebug() << "Re-using fd" << g_fd;
-		return g_fd;
-	}
+
+
+	//if (g_fd > 0) {
+	//	qDebug() << "Re-using fd" << g_fd;
+	//	return g_fd;
+	//}
 
 	fd = open(path, O_RDWR);
 	if (fd < 0) {
@@ -245,7 +264,9 @@ static int drm_open(const char *path)
 		return -1;
 	}
 
-	g_fd = fd;
+	//g_fd = fd;
+
+	qDebug() << "FD:" << fd;
 
 	/* set FD_CLOEXEC flag */
 	if ((flags = fcntl(fd, F_GETFD)) < 0 ||
@@ -304,6 +325,8 @@ int Kms::drm_init(unsigned int fourcc, const char *device)
 		goto err;
 	}
 
+	dev->plane_id = 190;
+
 	info("drm: Found %c%c%c%c plane_id: %x",
 		(fourcc>>0)&0xff, (fourcc>>8)&0xff, (fourcc>>16)&0xff, (fourcc>>24)&0xff,
 		dev->plane_id);
@@ -341,7 +364,7 @@ int Kms::display(struct drm_buffer *drm_buf, int width, int height)
 	int err = -1*drm_dmabuf_set_plane(drm_buf, width, height, 1);
 	qDebug() << "set plane:" << strerror(err);
 
-	QThread::sleep(10);
+	QThread::sleep(1);
 
         /* WARNING: this will _obviously_ cause the screen to flicker!!
          *

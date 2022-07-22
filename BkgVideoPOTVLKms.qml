@@ -3,10 +3,10 @@ import com.luke
 
 Rectangle {
     anchors.fill: parent
-    color: "transparent"
+    color: "orange"
 
-    Kms {
-        anchors.fill: parent
-        Component.onCompleted: play()
-    }
+    //Kms {
+    //    anchors.fill: parent
+    //    Component.onCompleted: play()
+    //}
 }
