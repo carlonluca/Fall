@@ -30,6 +30,13 @@
 #include <QCommandLineParser>
 #include <QDirIterator>
 
+#ifdef BUILD_PIAV
+#include <QtAVPlayer/qavplayer.h>
+#include <QtAVPlayer/qavvideoframe.h>
+#include <QtAVPlayer/qavaudioframe.h>
+#include <QtAVPlayer/pavrender.h>
+#endif
+
 #include "lqtutils/lqtutils_ui.h"
 #include "lqtutils/lqtutils_string.h"
 
@@ -44,7 +51,7 @@ int main(int argc, char** argv)
 
     QCommandLineOption chooseBkgOption(
                 QSL("b"),
-                QSL("Background type: image,qtvideo"),
+                QSL("Background type: image,qtvideo,potvl,piav"),
                 QSL("type"),
                 QSL("image"));
     parser.addOption(chooseBkgOption);
@@ -78,6 +85,23 @@ int main(int argc, char** argv)
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);
     view.setPosition(pos);
+
+#ifdef BUILD_PIAV
+    QAVPlayer p;
+    PAVRender r;
+    r.setRenderRect(QRect(50, 50, 500, 500));
+    QObject::connect(&p, &QAVPlayer::audioFrame, [&](const QAVAudioFrame &frame) { qDebug() << "audioFrame" << bool(frame); });
+    QObject::connect(&p, &QAVPlayer::videoFrame, [&](const QAVVideoFrame &frame) {
+        QSharedPointer<QAVVideoFrame> f(new QAVVideoFrame(frame));
+        r.present(f);
+    });
+    p.setSource(parser.value(mediaPathOption));
+    p.play();
+
+    QObject::connect(&p, &QAVPlayer::stateChanged, [&](auto s) { qDebug() << "stateChanged" << s << p.mediaStatus(); });
+    QObject::connect(&p, &QAVPlayer::mediaStatusChanged, [&](auto s){ qDebug() << "mediaStatusChanged"<< s << p.state(); });
+    QObject::connect(&p, &QAVPlayer::durationChanged, [&](auto d) { qDebug() << "durationChanged" << d; });
+#endif
 
     return app.exec();
 }

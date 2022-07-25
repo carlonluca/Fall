@@ -32,6 +32,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(BUILD_PIAV "Build PiAV support" OFF)
+
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
 # They need to be set before the find_package(...) calls below.
@@ -45,8 +47,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick DBus REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Multimedia REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick DBus Multimedia REQUIRED)
+
+if(BUILD_PIAV)
+    find_library(AVDEVICE_LIBRARY REQUIRED NAMES avdevice)
+    find_library(AVCODEC_LIBRARY REQUIRED NAMES avcodec)
+    find_library(AVFILTER_LIBRARY REQUIRED NAMES avfilter)
+    find_library(AVFORMAT_LIBRARY REQUIRED NAMES avformat)
+    find_library(AVUTIL_LIBRARY REQUIRED NAMES avutil)
+    find_library(SWRESAMPLE_LIBRARY REQUIRED NAMES swresample)
+    find_library(SWSCALE_LIBRARY REQUIRED NAMES swscale)
+
+    set(LINK_LIBAV ${AVDEVICE_LIBRARY} ${AVFILTER_LIBRARY} ${AVCODEC_LIBRARY} ${AVFORMAT_LIBRARY} ${AVUTIL_LIBRARY} ${SWRESAMPLE_LIBRARY} ${SWSCALE_LIBRARY})
+    set(LINK_PULSE -L${CMAKE_SYSROOT}/usr/lib/arm-linux-gnueabihf/pulseaudio -lpulsecommon-14.2)
+    set(LINK_BLAS  -L${CMAKE_SYSROOT}/usr/lib/arm-linux-gnueabihf/blas -lblas)
+    set(LINK_LAPACK  -L${CMAKE_SYSROOT}/usr/lib/arm-linux-gnueabihf/lapack -llapack)
+endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
@@ -73,11 +90,18 @@ else()
     endif()
 endif()
 
+if(BUILD_PIAV)
+    add_definitions(-DBUILD_PIAV)
+endif()
+
 target_compile_definitions(Fall
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(Fall
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus Qt${QT_VERSION_MAJOR}::Multimedia QtAVPlayer
   )
+if(BUILD_PIAV)
+    target_link_libraries(Fall PRIVATE ${LINK_LIBAV} ${LINK_PULSE} ${LINK_BLAS} ${LINK_LAPACK})
+endif()
 
 include_directories(AFTER /usr/include/libdrm/)
 
@@ -91,5 +115,3 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(Fall)
     qt_finalize_executable(Fall)
 endif()
-
-#target_link_libraries(Fall -l/opt/rpi/sysroot/usr/local/Qt-rasp-6.2.0-beta3/lib/libQt6DBus.so.6)
