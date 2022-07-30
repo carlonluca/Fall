@@ -21,9 +21,15 @@
 
 import QtQuick 2.0
 import QtMultimedia 5.0
-import PiOmxTexturesVideoLayer 0.1
+import PiAV 1.0
 
 Rectangle {
     anchors.fill: parent
     color: "transparent"
+
+    PAVVideo {
+        anchors.fill: parent
+        source: "file://" + mpath
+        Component.onCompleted: play()
+    }
 }

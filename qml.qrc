@@ -12,5 +12,6 @@
         <file>BkgVideoQt6.qml</file>
         <file>BkgVideoQt5.qml</file>
         <file>BkgVideoPOTVL.qml</file>
+        <file>BkgVideoPiAV.qml</file>
     </qresource>
 </RCC>
