@@ -52,6 +52,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
     ${lqtutils_src}
     main.cpp
+    kmslayer.h kmslayer.cpp
     qml.qrc
 )
 
@@ -77,6 +78,8 @@ target_compile_definitions(Fall
 target_link_libraries(Fall
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus
   )
+
+include_directories(AFTER /usr/include/libdrm/)
 
 set_target_properties(Fall PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

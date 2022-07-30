@@ -81,7 +81,7 @@ Item {
     Timer {
         repeat: true
         interval: creationInterval
-        running: true
+        running: !checkBoxBubbles.checked
         onTriggered: bubbleComponent.createObject(rootWindow, {x: Math.random()*parent.width})
     }
 
@@ -236,6 +236,20 @@ Item {
                 from: 50
                 to: 2000
                 value: 500
+                enabled: !checkBoxBubbles.checked
+            }
+
+            CheckBox {
+                id: checkBoxBubbles
+                text: qsTr("Disable bubbles")
+                font.pointSize: 17
+                anchors.left: parent.left
+                contentItem: Text {
+                    text: checkBoxBubbles.text
+                    font.pointSize: 13
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: checkBoxBubbles.indicator.width + checkBoxBubbles.spacing
+                }
             }
 
             CheckBox {
@@ -243,6 +257,7 @@ Item {
                 text: qsTr("Scale bubbles")
                 font.pointSize: 17
                 anchors.left: parent.left
+                enabled: !checkBoxBubbles.checked
                 contentItem: Text {
                     text: checkBox.text
                     font.pointSize: 13
@@ -256,6 +271,7 @@ Item {
                 text: qsTr("Color animation")
                 font.pointSize: 17
                 anchors.left: parent.left
+                enabled: !checkBoxBubbles.checked
                 contentItem: Text {
                     text: checkBoxColor.text
                     font.pointSize: 13
