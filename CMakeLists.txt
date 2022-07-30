@@ -88,5 +88,3 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(Fall)
     qt_finalize_executable(Fall)
 endif()
-
-#target_link_libraries(Fall -l/opt/rpi/sysroot/usr/local/Qt-rasp-6.2.0-beta3/lib/libQt6DBus.so.6)
