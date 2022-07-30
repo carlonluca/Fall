@@ -35,6 +35,7 @@
 #include <QtAVPlayer/qavvideoframe.h>
 #include <QtAVPlayer/qavaudioframe.h>
 #include <QtAVPlayer/pavrender.h>
+#include <QtAVPlayer/pavvideo.h>
 #endif
 
 #include "lqtutils/lqtutils_ui.h"
@@ -63,6 +64,10 @@ int main(int argc, char** argv)
     parser.addOption(mediaPathOption);
     parser.process(app);
 
+#ifdef BUILD_PIAV
+    qmlRegisterType<PAVVideo>("PiAV", 1, 0, "PAVVideo");
+#endif
+
     if (parser.value(chooseBkgOption) == QSL("qtvideo") && parser.value(mediaPathOption).isEmpty())
         qFatal("Set video path please");
 
@@ -86,7 +91,7 @@ int main(int argc, char** argv)
     view.resize(QGuiApplication::primaryScreen()->size()/2);
     view.setPosition(pos);
 
-#ifdef BUILD_PIAV
+#if 0
     QAVPlayer p;
     PAVRender r;
     r.setRenderRect(QRect(50, 50, 500, 500));

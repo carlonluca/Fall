@@ -97,10 +97,10 @@ endif()
 target_compile_definitions(Fall
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(Fall
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus Qt${QT_VERSION_MAJOR}::Multimedia QtAVPlayer
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus Qt${QT_VERSION_MAJOR}::Multimedia
   )
 if(BUILD_PIAV)
-    target_link_libraries(Fall PRIVATE ${LINK_LIBAV} ${LINK_PULSE} ${LINK_BLAS} ${LINK_LAPACK})
+    target_link_libraries(Fall PRIVATE -L${CMAKE_SYSROOT}/usr/local/Qt-rasp3-6.3.0/lib -lQtAVPlayer ${LINK_LIBAV} ${LINK_PULSE} ${LINK_BLAS} ${LINK_LAPACK})
 endif()
 
 include_directories(AFTER /usr/include/libdrm/)
