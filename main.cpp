@@ -40,9 +40,12 @@
 
 #include "lqtutils/lqtutils_ui.h"
 #include "lqtutils/lqtutils_string.h"
+#include "lightlogger/lc_logging.h"
 
 int main(int argc, char** argv)
 {
+    qInstallMessageHandler(lightlogger::log_handler_with_category);
+
     qputenv("QSG_INFO", "1");
 
     QGuiApplication app(argc, argv);
