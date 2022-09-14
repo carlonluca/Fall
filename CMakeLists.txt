@@ -52,7 +52,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
     ${lqtutils_src}
     main.cpp
-    qml.qrc
+)
+
+set(COMPILED_QML_FILES
+    RandomTimer.qml
+    RandomTimer2.qml
+    main.qml
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -72,11 +77,38 @@ else()
     endif()
 endif()
 
+set(QUICK_CONTROLS "QtQuick.Controls.macOS")
+
+qt_add_qml_module(Fall
+    URI fallqml
+    VERSION 1.0
+    NO_PLUGIN
+    DEPENDENCIES
+      QtQuick
+    IMPORTS
+      ${QUICK_CONTROLS}
+    RESOURCES
+        beach1.jpg
+        soap.svg
+        wiggle.frag.qsb
+        wiggle.vert.qsb
+    QML_FILES
+        ${COMPILED_QML_FILES}
+    )
+
 target_compile_definitions(Fall
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(Fall
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::DBus
+  PRIVATE
+      Qt${QT_VERSION_MAJOR}::Core
+      Qt${QT_VERSION_MAJOR}::Quick
+      Qt${QT_VERSION_MAJOR}::DBus
+      Qt${QT_VERSION_MAJOR}::QuickPrivate
+      Qt${QT_VERSION_MAJOR}::QmlPrivate
   )
+
+include_directories(BEFORE SYSTEM "/Users/luca/Qt/6.4.0/macos/lib/QtQuickTemplates2.framework/Versions/A/Headers/6.4.0/QtQuickTemplates2")
+include_directories(BEFORE SYSTEM "/Users/luca/Qt/6.4.0/macos/lib/QtQuickTemplates2.framework/Versions/A/Headers/6.4.0")
 
 set_target_properties(Fall PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

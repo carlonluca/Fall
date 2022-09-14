@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     view.engine()->rootContext()->setContextProperty("monospaceFont", fixedFont);
     view.engine()->rootContext()->setContextProperty("btype", parser.value(chooseBkgOption));
     view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
-    view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
+    view.setSource(QUrl(QStringLiteral("qrc:/fallqml/main.qml")));
 #if QT_VERSION_MAJOR <= 5
     view.setClearBeforeRendering(true);
 #endif

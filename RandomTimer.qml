@@ -22,11 +22,13 @@
 import QtQuick 2.0
 
 Timer {
+    property int hello: 1
+
     interval: 0
     running: true
     repeat: false
 
-    function restart(maxDelay) {
+    function restart(maxDelay: int): int {
         interval = Math.random()*maxDelay
         start()
     }

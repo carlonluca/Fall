@@ -19,17 +19,26 @@
  * along with Fall.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-import QtQuick 2.12
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
 
 Item {
     property alias creationInterval: slider.value
     property alias bkgImage: bkgLoader.item
     property int defaultSpacing: 5
+    property string hello: randomTimer.hello
 
     id: rootWindow
     anchors.fill: parent
+
+    Component.onCompleted: {
+        console.log("Test:", test("dhadjh"))
+    }
+
+    function test(n: int): int {
+        return n + 1
+    }
 
     Loader {
         id: bkgLoader
@@ -54,7 +63,7 @@ Item {
         id: wiggleEffect
 
         property real strength: 9.0
-        property real time: 50.0
+        property real time
         property variant source: bkgImage
 
         anchors.centerIn: parent
@@ -74,8 +83,8 @@ Item {
             running: true
         }
 
-        vertexShader: qt_major < 6 ? "qrc:/wiggle.vert" : "qrc:/wiggle.vert.qsb"
-        fragmentShader: qt_major < 6 ? "qrc:/wiggle.frag" : "qrc:/wiggle.frag.qsb"
+        vertexShader: qt_major < 6 ? "qrc:/fallqml/wiggle.vert" : "qrc:/fallqml/wiggle.vert.qsb"
+        fragmentShader: qt_major < 6 ? "qrc:/fallqml/wiggle.frag" : "qrc:/fallqml/wiggle.frag.qsb"
     }
 
     Timer {
@@ -147,7 +156,6 @@ Item {
                 radius: width/2
                 opacity: 0.4
                 anchors.fill: parent
-                color: "orange"
 
                 SequentialAnimation on color {
                     loops: Animation.Infinite
@@ -164,11 +172,12 @@ Item {
                 sourceSize.width: parent.width + 20
                 sourceSize.height: parent.height + 20
                 anchors.centerIn: parent
-                source: "/soap.svg"
+                source: "qrc:/fallqml/soap.svg"
             }
 
             RandomTimer {
-                onTriggered: {
+                id: randomTimer
+                onTriggered: () => {
                     parent.x = parent.x + Math.random()*rootWindow.width/5 - rootWindow.width/10
                     restart(3000)
                 }
@@ -241,7 +250,7 @@ Item {
 
             CheckBox {
                 id: checkBoxBubbles
-                text: qsTr("Disable bubbles")
+                text: "Disable bubbles"
                 font.pointSize: 17
                 anchors.left: parent.left
                 contentItem: Text {
@@ -254,7 +263,7 @@ Item {
 
             CheckBox {
                 id: checkBox
-                text: qsTr("Scale bubbles")
+                text: "Scale bubbles"
                 font.pointSize: 17
                 anchors.left: parent.left
                 enabled: !checkBoxBubbles.checked
@@ -268,7 +277,7 @@ Item {
 
             CheckBox {
                 id: checkBoxColor
-                text: qsTr("Color animation")
+                text: "Color animation"
                 font.pointSize: 17
                 anchors.left: parent.left
                 enabled: !checkBoxBubbles.checked
@@ -282,7 +291,7 @@ Item {
 
             CheckBox {
                 id: checkBoxShader
-                text: qsTr("Shader")
+                text: "Shader"
                 font.pointSize: 17
                 anchors.left: parent.left
                 contentItem: Text {
@@ -293,5 +302,9 @@ Item {
                 }
             }
         }
+    }
+
+    function hello(n: int): int {
+        return 1 + 1
     }
 }

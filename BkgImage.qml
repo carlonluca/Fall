@@ -22,7 +22,7 @@
 import QtQuick 2.0
 
 Image {
-    source: "/beach1.jpg"
+    source: "qrc:/fallqml/beach1.jpg"
     anchors.fill: parent
     fillMode: Image.Stretch
 }
