@@ -94,6 +94,7 @@ qt_add_qml_module(Fall
         wiggle.vert.qsb
     QML_FILES
         ${COMPILED_QML_FILES}
+    ENABLE_TYPE_COMPILER
     )
 
 target_compile_definitions(Fall
@@ -107,8 +108,12 @@ target_link_libraries(Fall
       Qt${QT_VERSION_MAJOR}::QmlPrivate
   )
 
-include_directories(BEFORE SYSTEM "/Users/luca/Qt/6.4.0/macos/lib/QtQuickTemplates2.framework/Versions/A/Headers/6.4.0/QtQuickTemplates2")
-include_directories(BEFORE SYSTEM "/Users/luca/Qt/6.4.0/macos/lib/QtQuickTemplates2.framework/Versions/A/Headers/6.4.0")
+qt6_target_compile_qml_to_cpp(Fall
+    QML_FILES ${COMPILED_QML_FILES}
+)
+
+#include_directories(BEFORE SYSTEM "/Users/luca/Qt/6.4.0/macos/lib/QtQuickTemplates2.framework/Versions/A/Headers/6.4.0/QtQuickTemplates2")
+#include_directories(BEFORE SYSTEM "/Users/luca/Qt/6.4.0/macos/lib/QtQuickTemplates2.framework/Versions/A/Headers/6.4.0")
 
 set_target_properties(Fall PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

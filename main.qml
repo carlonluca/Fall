@@ -21,7 +21,6 @@
 
 import QtQuick
 import QtQuick.Window
-import QtQuick.Controls
 
 Item {
     property alias creationInterval: slider.value
