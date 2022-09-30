@@ -50,7 +50,6 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick DBus REQUIRED)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
-    ${lqtutils_src}
     main.cpp
     qml.qrc
 )
