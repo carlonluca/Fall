@@ -27,9 +27,15 @@ Item {
     property alias creationInterval: slider.value
     property alias bkgImage: bkgLoader.item
     property int defaultSpacing: 5
+    property int i: 2147483647
+    property var ii: 4294967295
 
     id: rootWindow
     anchors.fill: parent
+
+    Component.onCompleted: {
+        fpsmonitor.printInt(ii);
+    }
 
     Loader {
         id: bkgLoader

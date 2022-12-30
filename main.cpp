@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
     QQuickView view;
-    LQTFrameRateMonitor* monitor = new LQTFrameRateMonitor(&view);
+    lqt::FrameRateMonitor* monitor = new lqt::FrameRateMonitor(&view);
     view.engine()->rootContext()->setContextProperty("fpsmonitor", monitor);
     view.engine()->rootContext()->setContextProperty("qt_major", QT_VERSION_MAJOR);
     view.engine()->rootContext()->setContextProperty("monospaceFont", fixedFont);
