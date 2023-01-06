@@ -33,10 +33,6 @@ Item {
     id: rootWindow
     anchors.fill: parent
 
-    Component.onCompleted: {
-        fpsmonitor.printInt(ii);
-    }
-
     Loader {
         id: bkgLoader
         source: {
