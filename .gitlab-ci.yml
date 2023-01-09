@@ -1,0 +1,29 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - test_linux
+  - test_android
+
+Test_linux:
+  stage: test_linux
+  image:
+    name: "carlonluca/qt-dev:6.4.2"
+    entrypoint: [""]
+  script:
+    - mkdir build
+    - cd build
+    - /opt/Qt-amd64-6.4.2/bin/qt-cmake ..
+    - make
+
+Test_android:
+  stage: test_android
+  image:
+    name: "carlonluca/qt-dev:6.4.2"
+    entrypoint: [""]
+  script:
+    - mkdir build
+    - cd build
+    - /opt/Qt-and-armv7a-6.4.2/bin/qt-cmake ..
+    - make
+    - test -f ./build/android-build/build/outputs/apk/debug/android-build-debug.apk
