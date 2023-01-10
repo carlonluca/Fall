@@ -26,4 +26,4 @@ Test_android:
     - cd build
     - /opt/Qt-and-armv7a-6.4.2/bin/qt-cmake ..
     - make
-    - test -f ./build/android-build/build/outputs/apk/debug/android-build-debug.apk
+    - test -f ./android-build/build/outputs/apk/debug/android-build-debug.apk
