@@ -45,8 +45,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Svg REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Svg REQUIRED)
+if (Qt5_FOUND)
+    find_package(QT NAMES Qt5 COMPONENTS AndroidExtras REQUIRED)
+    find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
+endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
@@ -74,9 +78,14 @@ endif()
 target_compile_definitions(Fall
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(Fall
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core
+  Qt${QT_VERSION_MAJOR}::Quick
+  Qt${QT_VERSION_MAJOR}::Svg
   lqtutils
   )
+if (Qt5_FOUND)
+    target_link_libraries(Fall PRIVATE Qt5::AndroidExtras)
+endif()
 
 set_target_properties(Fall PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

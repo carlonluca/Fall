@@ -32,6 +32,8 @@
 
 #include "lqtutils/lqtutils_ui.h"
 #include "lqtutils/lqtutils_string.h"
+#include "lqtutils/lqtutils_misc.h"
+
 #include "lightlogger/lc_logging.h"
 
 int main(int argc, char** argv)
@@ -72,14 +74,19 @@ int main(int argc, char** argv)
     view.engine()->rootContext()->setContextProperty("monospaceFont", fixedFont);
     view.engine()->rootContext()->setContextProperty("btype", parser.value(chooseBkgOption));
     view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
+    view.engine()->rootContext()->setContextProperty("lqtUtils", new lqt::QmlUtils(qApp));
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 #if QT_VERSION_MAJOR <= 5
     view.setClearBeforeRendering(true);
 #endif
     view.setColor(Qt::transparent);
+#ifdef L_OS_MOBILE
+    view.showFullScreen();
+#else
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);
     view.setPosition(pos);
+#endif
 
     return app.exec();
 }

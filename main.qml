@@ -33,6 +33,10 @@ Item {
     id: rootWindow
     anchors.fill: parent
 
+    Component.onCompleted: {
+        console.log("Android insets:", lqtUtils.safeAreaTopInset(), lqtUtils.safeAreaBottomInset())
+    }
+
     Loader {
         id: bkgLoader
         source: {
