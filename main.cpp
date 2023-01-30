@@ -81,7 +81,9 @@ int main(int argc, char** argv)
 #endif
     view.setColor(Qt::transparent);
 #ifdef L_OS_MOBILE
-    view.showFullScreen();
+    view.setFlag(Qt::MaximizeUsingFullscreenGeometryHint, true);
+    view.setFlag(Qt::Window, true);
+    view.show();
 #else
     view.show();
     view.resize(QGuiApplication::primaryScreen()->size()/2);

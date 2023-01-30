@@ -215,6 +215,7 @@ Item {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.margins: defaultSpacing
+        anchors.topMargin: lqtUtils.safeAreaTopInset() + defaultSpacing
         radius: 5
         width: column.width + 2*defaultSpacing
         height: column.height + 2*defaultSpacing
