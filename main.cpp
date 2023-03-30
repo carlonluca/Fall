@@ -29,6 +29,7 @@
 #include <QFontDatabase>
 #include <QCommandLineParser>
 #include <QDirIterator>
+#include <QTimer>
 
 #include "lqtutils/lqtutils_ui.h"
 #include "lqtutils/lqtutils_string.h"
@@ -89,6 +90,11 @@ int main(int argc, char** argv)
     view.resize(QGuiApplication::primaryScreen()->size()/2);
     view.setPosition(pos);
 #endif
+
+    QSharedPointer<lqt::ScreenLock> lock;
+    QTimer::singleShot(0, &view, [&lock] {
+        lock.reset(new lqt::ScreenLock);
+    });
 
     return app.exec();
 }
