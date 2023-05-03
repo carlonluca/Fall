@@ -77,7 +77,6 @@ int main(int argc, char** argv)
     view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
     view.engine()->rootContext()->setContextProperty("lqtUtils", new lqt::QmlUtils(qApp));
 
-    Q_INIT_RESOURCE(lqtutils_fa);
     lqt::embed_font_awesome(view.engine()->rootContext());
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 #if QT_VERSION_MAJOR <= 5
