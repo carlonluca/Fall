@@ -22,6 +22,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+import "qrc:/lqtutils/fonts"
 
 Item {
     property alias creationInterval: slider.value
@@ -218,6 +219,15 @@ Item {
         color: "orange"
         opacity: 0.8
         z: 1
+
+        LQTFontAwesomeFreeSolid {
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: defaultSpacing
+            width: 16
+            height: 16
+            iconUtf8: "\uf013"
+        }
 
         Column {
             id: column

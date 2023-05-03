@@ -52,6 +52,7 @@ if (Qt5_FOUND)
     find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
 endif()
 
+set(ENABLE_FONT_AWESOME true)
 include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
 set(PROJECT_SOURCES
     main.cpp

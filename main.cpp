@@ -33,7 +33,7 @@
 
 #include "lqtutils/lqtutils_ui.h"
 #include "lqtutils/lqtutils_string.h"
-#include "lqtutils/lqtutils_misc.h"
+#include "lqtutils/lqtutils_fa.h"
 
 #include "lightlogger/lc_logging.h"
 
@@ -76,6 +76,9 @@ int main(int argc, char** argv)
     view.engine()->rootContext()->setContextProperty("btype", parser.value(chooseBkgOption));
     view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
     view.engine()->rootContext()->setContextProperty("lqtUtils", new lqt::QmlUtils(qApp));
+
+    Q_INIT_RESOURCE(lqtutils_fa);
+    lqt::embed_font_awesome(view.engine()->rootContext());
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 #if QT_VERSION_MAJOR <= 5
     view.setClearBeforeRendering(true);
