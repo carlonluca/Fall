@@ -22,7 +22,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
-import "qrc:/lqtutils/fonts"
+import "qrc:/lqtutils/fontawesome"
 
 Item {
     property alias creationInterval: slider.value
