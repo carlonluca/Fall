@@ -37,6 +37,8 @@
 
 #include "lightlogger/lc_logging.h"
 
+lightlogger::custom_log_func lightlogger::global_log_func = lightlogger::log_to_default;
+
 int main(int argc, char** argv)
 {
     qputenv("QSG_INFO", "1");

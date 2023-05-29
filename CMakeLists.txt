@@ -47,7 +47,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Svg REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Svg REQUIRED)
-if (Qt5_FOUND)
+if (Qt5_FOUND AND ANDROID)
     find_package(QT NAMES Qt5 COMPONENTS AndroidExtras REQUIRED)
     find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
 endif()
@@ -84,7 +84,7 @@ target_link_libraries(Fall
   Qt${QT_VERSION_MAJOR}::Svg
   lqtutils
   )
-if (Qt5_FOUND)
+if (Qt5_FOUND AND ANDROID)
     target_link_libraries(Fall PRIVATE Qt5::AndroidExtras)
 endif()
 
