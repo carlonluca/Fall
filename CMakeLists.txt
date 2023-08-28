@@ -98,3 +98,5 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(Fall)
     qt_finalize_executable(Fall)
 endif()
+
+install(TARGETS Fall DESTINATION bin)
