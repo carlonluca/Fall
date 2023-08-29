@@ -4,16 +4,17 @@ variables:
 stages:
   - test_linux
   - test_android
+  - appimage
 
 Test_linux:
   stage: test_linux
   image:
-    name: "carlonluca/qt-dev:6.4.2"
+    name: "carlonluca/qt-dev:6.5.2"
     entrypoint: [""]
   script:
     - mkdir build
     - cd build
-    - /opt/Qt-amd64-6.4.2/bin/qt-cmake ..
+    - /opt/Qt-amd64-6.5.2/bin/qt-cmake ..
     - make
 
 Test_android:
@@ -27,3 +28,22 @@ Test_android:
     - /opt/Qt-and-armv7a-6.4.2/bin/qt-cmake ..
     - make
     - test -f ./android-build/build/outputs/apk/debug/android-build-debug.apk
+
+Appimage:
+  stage: appimage
+  image:
+    name: "carlonluca/qt-dev:6.5.2"
+    entrypoint: [""]
+  script:
+    - rm /opt/Qt-amd64-6.5.2
+    - sed -i '/Qt-amd64-6.5.2/c\NewQtLine' /etc/ld.so.conf.d/x86_64-linux-gnu.conf
+    - ldconfig
+    - /opt/qt/6.5.2/gcc_64/bin/qt-cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - cmake --build .
+    - make install DESTDIR=AppDir
+    - mkdir -p AppDir/usr/share/icons
+    - touch AppDir/usr/share/icons/icon.png
+    - appimage-builder --recipe appimage/AppImageBuilder.yml
+  artifacts:
+    paths:
+      - Fall-latest-x86_64.AppImage
