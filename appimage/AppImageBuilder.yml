@@ -53,6 +53,9 @@ AppDir:
     - /opt/qt/6.5.2/gcc_64/lib/libQt6StateMachine.so.6
     - /opt/qt/6.5.2/gcc_64/lib/libQt6WebView.so.6
     - /opt/qt/6.5.2/gcc_64/lib/libQt6Xml.so.6
+    - /opt/qt/6.5.2/gcc_64/lib/libQt6Svg.so.6
+    - /opt/qt/6.5.2/gcc_64/lib/libQt6DBus.so.6
+    - /opt/qt/6.5.2/gcc_64/lib/libQt6WaylandClient.so.6
     - /usr/share/icons/default/index.theme
     exclude:
     - usr/share/man
