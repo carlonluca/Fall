@@ -14,7 +14,7 @@ Test_linux:
   script:
     - mkdir build
     - cd build
-    - /opt/Qt-amd64-6.6.0/bin/qt-cmake ..
+    - qt-cmake ..
     - make
 
 Test_android:
@@ -35,7 +35,7 @@ Appimage:
     name: "carlonluca/qt-dev:6.6.0"
     entrypoint: [""]
   script:
-    - /opt/qt/6.6.0/gcc_64/bin/qt-cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - qt-cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
     - cmake --build .
     - make install DESTDIR=AppDir
     - mkdir -p AppDir/usr/share/icons
