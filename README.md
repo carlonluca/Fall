@@ -21,3 +21,11 @@ The available options for the background are:
 * image: an embedded static image is shown;
 * qtvideo: a video is decoded though regular Qt backends and rendered as the background (use the -p param to set the path to the video);
 * potvl: a video decoded and rendered through PiOmxTextures (only for Raspberry Pi, https://github.com/carlonluca/pot).
+
+## CI
+
+The repo contains configurations for CI using docker-qt.
+
+## AppImage
+
+The repo contains a sample configuration to create AppImages in a docker environment. The resulting AppImage can be executing by simply double-clicking th executable in most distros.
