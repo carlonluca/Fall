@@ -9,7 +9,7 @@ stages:
 Test_linux:
   stage: test_linux
   image:
-    name: "carlonluca/qt-dev:6.6.0"
+    name: "carlonluca/qt-dev:6.6.1"
     entrypoint: [""]
   script:
     - mkdir build
@@ -32,7 +32,7 @@ Test_android:
 Appimage:
   stage: appimage
   image:
-    name: "carlonluca/qt-dev:6.6.0"
+    name: "carlonluca/qt-dev:6.6.1"
     entrypoint: [""]
   script:
     - qt-cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
