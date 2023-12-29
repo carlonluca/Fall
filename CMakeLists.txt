@@ -53,7 +53,7 @@ if (Qt5_FOUND AND ANDROID)
 endif()
 
 set(ENABLE_FONT_AWESOME true)
-include(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils/CMakeLists.txt)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils)
 set(PROJECT_SOURCES
     main.cpp
     qml.qrc
@@ -82,7 +82,7 @@ target_link_libraries(Fall
   PRIVATE Qt${QT_VERSION_MAJOR}::Core
   Qt${QT_VERSION_MAJOR}::Quick
   Qt${QT_VERSION_MAJOR}::Svg
-  lqtutils
+  lqtutilsplugin
   )
 if (Qt5_FOUND AND ANDROID)
     target_link_libraries(Fall PRIVATE Qt5::AndroidExtras)

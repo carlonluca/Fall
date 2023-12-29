@@ -32,7 +32,7 @@
 #include <QTimer>
 
 #include "lqtutils/lqtutils_ui.h"
-#include "lqtutils/lqtutils_string.h"
+#include "lqtutils/lqtutils_qsl.h"
 #include "lqtutils/lqtutils_fa.h"
 
 #include "lightlogger/lc_logging.h"
