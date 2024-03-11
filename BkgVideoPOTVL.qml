@@ -26,6 +26,7 @@ import PiOmxTexturesVideoLayer 0.1
 Rectangle {
     anchors.fill: parent
     color: "orange"
+    opacity: 0.2
 
     Video {
         id: player
