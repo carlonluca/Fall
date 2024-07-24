@@ -20,7 +20,7 @@ Options:
 The available options for the background are:
 * image: an embedded static image is shown;
 * qtvideo: a video is decoded though regular Qt backends and rendered as the background (use the -p param to set the path to the video);
-* potvl: a video decoded and rendered through PiOmxTextures (only for Raspberry Pi, https://github.com/carlonluca/pot).
+* potvl: a video decoded and rendered through PiOmxTextures (library only for Raspberry Pi, must be compiled and installed separately, https://github.com/carlonluca/pot).
 
 ## CI
 
