@@ -57,7 +57,7 @@ int main(int argc, char** argv)
     parser.addOption(chooseBkgOption);
     QCommandLineOption mediaPathOption(
                 QSL("p"),
-                QSL("Media path"),
+                QSL("Absolute path to the media file"),
                 QSL("path"),
                 QString());
     parser.addOption(mediaPathOption);
