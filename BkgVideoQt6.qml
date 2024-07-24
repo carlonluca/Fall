@@ -29,6 +29,7 @@ Image {
         source: "file://" + mpath
         anchors.fill: parent
         fillMode: VideoOutput.Stretch
+        loops: MediaPlayer.Infinite
         Component.onCompleted: play()
     }
 }
