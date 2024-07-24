@@ -240,12 +240,12 @@ Item {
                 text: qsTr("fps ≈ ") + fpsmonitor.freq + " @ int ≈ " + Math.round(creationInterval) + " ms"
                 font.family: monospaceFont
                 font.pointSize: 13
-                width: 220
             }
 
             Slider {
                 id: slider
                 anchors.right: parent.right
+                anchors.left: parent.left
                 from: 50
                 to: 2000
                 value: 500
