@@ -66,9 +66,13 @@ int main(int argc, char** argv)
     if (parser.value(chooseBkgOption) == QSL("qtvideo") && parser.value(mediaPathOption).isEmpty())
         qFatal("Set video path please");
 
-    QSize __size = QGuiApplication::primaryScreen()->size()*0.5*0.5;
-    QPoint pos(__size.width(), __size.height());
-    QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    const QSize __size = QGuiApplication::primaryScreen()->size()*0.5*0.5;
+    const QPoint pos(__size.width(), __size.height());
+    const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    const QString mediaPath = parser.value(mediaPathOption);
+    const QString mediaAbsPath = mediaPath.isEmpty() ? QString() : QFileInfo(mediaPath).absoluteFilePath();
+    if (!mediaAbsPath.isEmpty() && !QFile(mediaAbsPath).exists())
+        qFatal("No such file %s", qPrintable(mediaAbsPath));
 
     QQuickView view;
     lqt::FrameRateMonitor* monitor = new lqt::FrameRateMonitor(&view);
@@ -76,7 +80,7 @@ int main(int argc, char** argv)
     view.engine()->rootContext()->setContextProperty("qt_major", QT_VERSION_MAJOR);
     view.engine()->rootContext()->setContextProperty("monospaceFont", fixedFont);
     view.engine()->rootContext()->setContextProperty("btype", parser.value(chooseBkgOption));
-    view.engine()->rootContext()->setContextProperty("mpath", parser.value(mediaPathOption));
+    view.engine()->rootContext()->setContextProperty("mpath", mediaAbsPath);
     view.engine()->rootContext()->setContextProperty("lqtUtils", new lqt::QmlUtils(qApp));
 
     lqt::embed_font_awesome(view.engine()->rootContext());

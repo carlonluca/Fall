@@ -22,7 +22,7 @@
 import QtQuick 2.0
 
 Image {
-    source: "/beach1.jpg"
+    source: mpath ? "file://" + mpath : "/beach1.jpg"
     anchors.fill: parent
     fillMode: Image.Stretch
 }
