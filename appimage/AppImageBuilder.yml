@@ -1,9 +1,9 @@
 version: 1
 script:
-- mkdir -p AppDir/opt/qt/6.6.1/gcc_64/
-- cp -r /opt/qt/6.6.1/gcc_64/plugins AppDir/opt/qt/6.6.1/gcc_64/
-- cp -r /opt/qt/6.6.1/gcc_64/qml AppDir/opt/qt/6.6.1/gcc_64/
-- cp -r /opt/qt/6.6.1/gcc_64/resources AppDir/opt/qt/6.6.1/gcc_64/
+- mkdir -p AppDir/opt/qt/6.9.2/gcc_64/
+- cp -r /opt/qt/6.9.2/gcc_64/plugins AppDir/opt/qt/6.9.2/gcc_64/
+- cp -r /opt/qt/6.9.2/gcc_64/qml AppDir/opt/qt/6.9.2/gcc_64/
+- cp -r /opt/qt/6.9.2/gcc_64/resources AppDir/opt/qt/6.9.2/gcc_64/
 AppDir:
   path: /root/Fall/build/AppDir
   app_info:
@@ -48,15 +48,15 @@ AppDir:
     - /lib/x86_64-linux-gnu/libOpenGL.so.0
     - /lib/x86_64-linux-gnu/libelf.so.1
     - /lib/x86_64-linux-gnu/libsensors.so.5
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6Core5Compat.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6QuickControls2.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6StateMachine.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6WebView.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6Xml.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6Svg.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6DBus.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6WaylandClient.so.6
-    - /opt/qt/6.6.1/gcc_64/lib/libQt6WaylandEglClientHwIntegration.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6Core5Compat.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6QuickControls2.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6StateMachine.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6WebView.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6Xml.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6Svg.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6DBus.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6WaylandClient.so.6
+    - /opt/qt/6.9.2/gcc_64/lib/libQt6WaylandEglClientHwIntegration.so.6
     - /usr/share/icons/default/index.theme
     exclude:
     - usr/share/man
