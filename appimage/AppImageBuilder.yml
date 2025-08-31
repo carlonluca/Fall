@@ -42,6 +42,19 @@ AppDir:
     - liblzma5:amd64
     - libpcre3:amd64
     - libtinfo6:amd64
+    - ca-certificates:amd64
+    - fonts-dejavu-core:amd64
+    - libc-bin:amd64
+    - xkb-data:amd64
+    - libwayland-egl++1:amd64
+    - libwayland-egl1-mesa:amd64
+    - libwayland-egl1:amd64
+    - libgles2:amd64
+    - libglvnd0:amd64
+    - libegl1:amd64
+    - libglapi-mesa:amd64
+    - libxkbcommon-dev:amd64
+
   files:
     include:
     - /lib/x86_64-linux-gnu/libLLVM-15.so.1
