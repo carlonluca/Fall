@@ -50,15 +50,15 @@ int main(int argc, char** argv)
     parser.addHelpOption();
 
     QCommandLineOption chooseBkgOption(
-                QSL("b"),
-                QSL("Background type: image,qtvideo"),
-                QSL("type"),
-                QSL("image"));
+                "b",
+                "Background type: image,qtvideo",
+                "type",
+                "image");
     parser.addOption(chooseBkgOption);
     QCommandLineOption mediaPathOption(
-                QSL("p"),
-                QSL("Media path"),
-                QSL("path"),
+                "p",
+                "Media path",
+                "path",
                 QString());
     parser.addOption(mediaPathOption);
     parser.process(app);

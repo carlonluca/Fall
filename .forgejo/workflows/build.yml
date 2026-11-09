@@ -1,0 +1,76 @@
+
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-linux:
+    name: Test Linux
+    runs-on: ubuntu-26.04
+    container:
+      image: carlonluca/qt-dev:6.10.0
+      options: --entrypoint ""
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          qt-cmake ..
+          make
+
+  test-android:
+    name: Test Android
+    runs-on: ubuntu-26.04
+    container:
+      image: carlonluca/qt-dev:6.10.0
+      options: --entrypoint ""
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          /opt/qt/6.10.0/android_armv7/bin/qt-cmake ..
+          make
+          test -f ./android-build/build/outputs/apk/debug/android-build-debug.apk
+
+  appimage:
+    name: Build AppImage
+    runs-on: ubuntu-26.04
+    container:
+      image: carlonluca/qt-dev:6.10.0
+      options: --entrypoint ""
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build AppImage
+        run: |
+          qt-cmake . \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr
+
+          cmake --build .
+          make install DESTDIR=AppDir
+
+          mkdir -p AppDir/usr/share/icons
+          touch AppDir/usr/share/icons/icon.png
+
+          . /venv/bin/activate
+          appimage-builder --recipe appimage/AppImageBuilder.yml
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v3
+        with:
+          name: Fall-latest-x86_64
+          path: Fall-latest-x86_64.AppImage
+          if-no-files-found: error
