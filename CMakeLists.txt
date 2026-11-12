@@ -91,7 +91,7 @@ target_link_libraries(Fall
 if (Qt5_FOUND AND ANDROID)
     target_link_libraries(Fall PRIVATE Qt5::AndroidExtras)
 endif()
-if (ANDROID)
+if (Qt6_FOUND AND ANDROID)
     target_link_libraries(lqtutils PRIVATE Qt6::CorePrivate)
 endif()
 
