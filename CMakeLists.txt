@@ -92,7 +92,7 @@ if (Qt5_FOUND AND ANDROID)
     target_link_libraries(Fall PRIVATE Qt5::AndroidExtras)
 endif()
 if (Qt6_FOUND AND ANDROID)
-    target_link_libraries(lqtutils PRIVATE Qt6::CorePrivate)
+    target_link_libraries(Fall PRIVATE Qt6::CorePrivate)
 endif()
 
 set_target_properties(Fall PROPERTIES
