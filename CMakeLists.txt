@@ -51,6 +51,10 @@ if (Qt5_FOUND AND ANDROID)
     find_package(QT NAMES Qt5 COMPONENTS AndroidExtras REQUIRED)
     find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
 endif()
+if (Qt6_FOUND AND ANDROID)
+    find_package(QT NAMES Qt6 REQUIRED COMPONENTS CorePrivate)
+    find_package(Qt6 OPTIONAL_COMPONENTS CorePrivate)
+endif()
 
 set(ENABLE_FONT_AWESOME true)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lqtutils)
@@ -86,6 +90,9 @@ target_link_libraries(Fall
   )
 if (Qt5_FOUND AND ANDROID)
     target_link_libraries(Fall PRIVATE Qt5::AndroidExtras)
+endif()
+if (ANDROID)
+    target_link_libraries(lqtutils PRIVATE Qt6::CorePrivate)
 endif()
 
 set_target_properties(Fall PROPERTIES
